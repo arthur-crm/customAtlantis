@@ -1,38 +1,29 @@
-name: create new release with changelog
+name: Create Release
 
 on:
-  release:
-    types: [created]
-
-env:
-  REGISTRY: ghcr.io
-  IMAGE_NAME: ${{ github.repository }}
+  push:
+    branches:
+    - main
 
 jobs:
-  release:
-    runs-on: ubuntu-22.04
+  deploy:
+    runs-on: ubuntu-latest
+
     steps:
-      - uses: actions/checkout@v3
-        with:
-          fetch-depth: 100
+      - name: Checkout branch
+        uses: actions/checkout@v2
 
-      - name: Login to registry ${{ env.REGISTRY_TYPE }}
-        uses: docker/login-action@v2.1.0
+      - name: Generate release tag
+        id: generate_release_tag
+        uses: amitsingh-007/next-release-tag@v1.0.0
         with:
-          registry: ${{ env.REGISTRY }}
-          username: ${{ github.actor }}
-          password: ${{ secrets.GITHUB_TOKEN }}
-      
-      - name: Extract metadata (tags, labels) for Docker
-        id: meta
-        uses: docker/metadata-action@98669ae865ea3cffbcbaa878cf57c20bbf1c6c38
-        with:
-          images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          tag_prefix: ''
 
-      - name: Build and push Docker image
-        uses: docker/build-push-action@ad44023a93711e3deb337508980b4b5e9bcdc5dc
+      - name: Create Release
+        uses: actions/create-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          context: ./app
-          push: true
-          tags: ${{ steps.meta.outputs.tags }}
-          labels: ${{ steps.meta.outputs.labels }}
+          tag_name: ${{ steps.generate_release_tag.outputs.release_tag }}
+          release_name: Release ${{ steps.generate_release_tag.outputs.release_tag }}
