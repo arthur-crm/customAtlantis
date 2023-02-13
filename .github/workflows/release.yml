@@ -1,29 +1,24 @@
-name: Create Release
+name: AutoRelease
 
 on:
   push:
-    branches:
-    - main
+    branches: [ main ]
 
+# A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
-  deploy:
+  # This workflow contains a single job called "build"
+  release:
+    # The type of runner that the job will run on
     runs-on: ubuntu-latest
 
+    # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
-      - name: Checkout branch
-        uses: actions/checkout@v2
-
-      - name: Generate release tag
-        id: generate_release_tag
-        uses: amitsingh-007/next-release-tag@v1.0.0
+      - uses: actions/checkout@v2
+      - uses: CupOfTea696/gh-action-auto-release@v1.0.0
         with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          tag_prefix: ''
-
-      - name: Create Release
-        uses: actions/create-release@v1
+          title: "Release: $version"
+          tag: "v$semver"
+          draft: false
+          regex: "/^Release: #{semver}$/i"
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          tag_name: ${{ steps.generate_release_tag.outputs.release_tag }}
-          release_name: Release ${{ steps.generate_release_tag.outputs.release_tag }}
