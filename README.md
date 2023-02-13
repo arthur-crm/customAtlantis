@@ -1,14 +1,5 @@
 # Docker Atlantis Image
 
-<!--- Build Badges -->
-[![build test scan docker images](https://github.com/getindata/docker-atlantis/actions/workflows/pr_opened.yml/badge.svg)](https://github.com/getindata/docker-atlantis/actions/workflows/pr_opened.yml)
-[![create new release with changelog](https://github.com/getindata/docker-atlantis/actions/workflows/release.yml/badge.svg)](https://github.com/getindata/docker-atlantis/actions/workflows/release.yml)
-
-<!--- Replace repository name -->
-![Docker](https://badgen.net/badge/icon/docker?icon=docker&label)
-![License](https://badgen.net/github/license/getindata/docker-atlantis/)
-![Release](https://badgen.net/github/release/getindata/docker-atlantis/)
-
 
 <p align="center">
   <img height="150" src="https://getindata.com/img/logo.svg">
