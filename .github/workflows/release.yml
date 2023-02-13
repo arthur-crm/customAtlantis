@@ -18,7 +18,6 @@ jobs:
 
       - name: Login to registry ${{ env.REGISTRY_TYPE }}
         uses: docker/login-action@v2.1.0
-        if: ${{ steps.release-label.outputs.level != null }}
         with:
           registry: ${{ env.REGISTRY }}
           username: ${{ github.actor }}
