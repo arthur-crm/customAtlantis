@@ -1,8 +1,9 @@
 name: Relase Atlantis Custom Image
 
 on:
-  release:
-    types: [created]
+  push:
+    tags:        
+      - "v*"
 
 env:
   REGISTRY: ghcr.io
