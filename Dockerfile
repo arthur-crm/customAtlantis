@@ -65,3 +65,11 @@ RUN set -eux \
 	&& mv terragrunt-atlantis-config_${TERRAGRUNT_ATLANTIS_CONFIG}_linux_amd64/terragrunt-atlantis-config_${TERRAGRUNT_ATLANTIS_CONFIG}_linux_amd64 terragrunt-atlantis-config \
 	&& chmod +x terragrunt-atlantis-config \
 	&& rm -rf terragrunt-atlantis-config_${TERRAGRUNT_ATLANTIS_CONFIG}_linux_amd64*
+	
+ADD create_github_user_ssh_key.sh /usr/local/bin/
+
+# rename original entry point
+RUN mv /usr/local/bin/docker-entrypoint.sh /usr/local/bin/docker-entrypoint-original.sh
+
+# the new docker-entrypoint.sh will do some work and then call the original entry point
+ADD docker-entrypoint.sh /usr/local/bin/docker-entrypoint.sh
