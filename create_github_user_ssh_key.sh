@@ -1,5 +1,5 @@
 #!/usr/bin/dumb-init /bin/sh
-set -e
+set -xe
 
 # the script is being executed by the root user
 ATLANTIS_HOME=/home/atlantis

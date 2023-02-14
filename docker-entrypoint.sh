@@ -1,5 +1,5 @@
 #!/usr/bin/dumb-init /bin/sh
-set -e
+set -xe
 
 create_github_user_ssh_key.sh
 
