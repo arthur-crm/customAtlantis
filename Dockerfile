@@ -5,7 +5,8 @@ RUN apk add \
 	aws-cli \
 	curl \
 	make \
-	unzip
+	unzip \
+	direnv
 
 ARG TERRAGRUNT
 ARG TERRAFORM
