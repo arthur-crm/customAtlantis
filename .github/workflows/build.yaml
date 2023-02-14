@@ -13,6 +13,7 @@ env:
   TERRAGRUNT: "0.38.9"
   TERRAGRUNT_ATLANTIS_CONFIG: "1.16.0"
   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+  RELEASE_ENV: staging
 
 jobs:
   release:
@@ -51,4 +52,34 @@ jobs:
             "TERRAFORM=${{ env.TERRAFORM }}"
             "TERRAGRUNT=${{ env.TERRAGRUNT }}"
             "TERRAGRUNT_ATLANTIS_CONFIG=${{ env.TERRAGRUNT_ATLANTIS_CONFIG }}"
-          
+
+      - uses: imranismail/setup-kustomize@v1
+      - name: Update the image
+        run: |
+          pushd argocd/apps-sources/overlays/${RELEASE_ENV}/atlantis
+          kustomize edit set image ${{ env.REGISTRY }}/${{ env.REPO }}=${{ env.REGISTRY }}/${{ env.REPO }}:${{ steps.release.outputs.tag_name }}
+          popd
+
+      - name: Create Pull Request
+        uses: peter-evans/create-pull-request@v4
+        id: cpr
+        with:
+          token: ${{ secrets.API_TOKEN_GITHUB }}
+          author: ${{ github.actor }} <${{ github.actor }}@github.com>
+          commit-message: Release ${{ env.REPO } image ${{ steps.release.outputs.tag_name }}
+          assignees: ${{ github.actor }}
+          labels: |
+            release
+            automated pr
+          reviewers: ${{ github.actor }}
+          title: Bump ${{ env.REPO }} version ${{ steps.release.outputs.tag_name }}
+          body: |
+            Update report
+            - PR created by ${{ github.actor }}
+            - Image version ${{ github.ref_name }}
+            - Commits: ${{ github.event.head_commit.message }}
+          branch: release-from-${{ env.REPO }}-${{ steps.release.outputs.tag_name }}
+          base: main
+          path: argocd
+          draft: false
+          signoff: false    
