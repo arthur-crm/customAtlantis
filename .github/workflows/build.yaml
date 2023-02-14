@@ -56,7 +56,7 @@ jobs:
       - uses: imranismail/setup-kustomize@v1
       - name: Update the image
         run: |
-          pushd argocd/apps-sources/overlays/${RELEASE_ENV}/atlantis
+          pushd argocd/sysapps-sources/overlays/${RELEASE_ENV}/atlantis
           kustomize edit set image ${{ env.REGISTRY }}/${{ env.REPO }}=${{ env.REGISTRY }}/${{ env.REPO }}:${{ steps.release.outputs.tag_name }}
           popd
 
