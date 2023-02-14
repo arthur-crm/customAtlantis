@@ -40,7 +40,7 @@ jobs:
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
       
-
+    
       - name: Build and push Docker image
         uses: docker/build-push-action@ad44023a93711e3deb337508980b4b5e9bcdc5dc
         with:
@@ -52,6 +52,12 @@ jobs:
             "TERRAFORM=${{ env.TERRAFORM }}"
             "TERRAGRUNT=${{ env.TERRAGRUNT }}"
             "TERRAGRUNT_ATLANTIS_CONFIG=${{ env.TERRAGRUNT_ATLANTIS_CONFIG }}"
+            
+      - uses: actions/checkout@v3
+        with: 
+          repository: arthur-crm/mainArgocd
+          token: ${{ secrets.API_TOKEN_GITHUB }}
+          path: argocd
 
       - uses: imranismail/setup-kustomize@v1
       - name: Update the image
