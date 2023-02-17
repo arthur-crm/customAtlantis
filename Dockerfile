@@ -12,6 +12,8 @@ ARG TERRAGRUNT
 ARG TERRAFORM
 ARG TERRAGRUNT_ATLANTIS_CONFIG
 
+ENV ATLANTIS_DEFAULT_TF_VERSION="${TERRAFORM}"
+
 ###
 ### Ensure Terraform version is present, linked and validated
 ###
